@@ -47,6 +47,7 @@
 
             for (let i = 1; i < 10; i++) {
                 for (let j = 1; j < 10; j++) {
+                    let casilla = document.querySelector(`#casilla${i}${j}`);
                     let valor = Math.floor(Math.random() * 9) + 1;
                     if(j>3 && j<7){
                         cuadro = 3;
@@ -55,21 +56,16 @@
                     }else{
                         cuadro = 0;
                     }
-                    if(RevisarfilaColumna(i,j,valor) && RevisarCuadro(i,cuadro,valor)){
-                        let casilla = document.querySelector(`#casilla${i}${j}`);
+                    if(RevisarfilaColumna(i,j,valor) && RevisarCuadro(i,cuadro,valor) && casilla.querySelector("p").textContent === ""){
+                        
                         casilla.querySelector("p").textContent = valor;
+                        cont++;
                     }
                     
                 }
             }
-            for (let i = 1; i < 10; i++) {
-                for (let j = 1; j < 10; j++) {
-                    let casilla = document.querySelector(`#casilla${i}${j}`);
-                    if(casilla.querySelector("p").textContent !== ""){
-                        cont++;
-                    }
-                }
-            }
+
+            
             if(cont === 81){
                 terminado = true;
             }
