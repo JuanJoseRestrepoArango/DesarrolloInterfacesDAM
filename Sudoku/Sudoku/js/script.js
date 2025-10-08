@@ -39,31 +39,35 @@
     }
 
     function crearRellenarTablero(){
-        let numeros = [1,2,3,4,5,6,7,8,9].sort(() => Math.random() - 0.5);
+        
         for (let i = 1; i < 10; i++) {
             for (let j = 1; j < 10; j++) {
-                let casilla = document.querySelector(`#casilla${i}${j}`);
                 
-                // Solo intentamos rellenar si está vacía (asumiendo que el tablero inicia vacío)
+                let numeros = [1,2,3,4,5,6,7,8,9].sort(() => Math.random() - 0.5);
+
+                let casilla = document.querySelector(`#casilla${i}${j}`);
                 if(casilla.querySelector("p").textContent === ""){
-                    let valido = false;
                     
-                    // Corregido: Usamos 'numeros' (que tiene 9 elementos)
-                    for (let k = 0; k < numeros.length; k++) { 
+                    for (let k = 0; k < 9; k++) { 
                         let valor = numeros[k];
                         
-                        // Si el valor es legal en ese momento
                         if(RevisarfilaColumna(i, j, valor) && RevisarCuadro(i, j, valor)){
                             casilla.querySelector("p").textContent = valor;
-                            valido = true;
-                            break; // Pasamos a la siguiente casilla (j)
+                            console.log(valor,`valor casilla ${i},${j}`);
+                            if(crearRellenarTablero()){
+                                return true
+                            };
+                            
                         }
-                    } 
-                    
+                    }
+                    return false; 
+                            
                 }
+                
             }
         } 
     }
+    
     function RevisarfilaColumna(f,c,valor){
         let filas = [];
         let columnas = [];
@@ -95,7 +99,9 @@
         }
         return true;
     }
+    
     crearTablero();
     crearOpciones();
     crearRellenarTablero()
+    
 })();
