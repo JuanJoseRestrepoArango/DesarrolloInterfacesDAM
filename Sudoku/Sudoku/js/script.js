@@ -39,37 +39,30 @@
     }
 
     function crearRellenarTablero(){
-        let terminado = false;
-        let cont = 0;
-        let cuadro = 0;
-        while(terminado === false){
-            
-
-            for (let i = 1; i < 10; i++) {
-                for (let j = 1; j < 10; j++) {
-                    let casilla = document.querySelector(`#casilla${i}${j}`);
-                    let valor = Math.floor(Math.random() * 9) + 1;
-                    if(j>3 && j<7){
-                        cuadro = 3;
-                    }else if(j>6){
-                        cuadro = 6;
-                    }else{
-                        cuadro = 0;
-                    }
-                    if(RevisarfilaColumna(i,j,valor) && RevisarCuadro(i,cuadro,valor) && casilla.querySelector("p").textContent === ""){
+        let numeros = [1,2,3,4,5,6,7,8,9].sort(() => Math.random() - 0.5);
+        for (let i = 1; i < 10; i++) {
+            for (let j = 1; j < 10; j++) {
+                let casilla = document.querySelector(`#casilla${i}${j}`);
+                
+                // Solo intentamos rellenar si está vacía (asumiendo que el tablero inicia vacío)
+                if(casilla.querySelector("p").textContent === ""){
+                    let valido = false;
+                    
+                    // Corregido: Usamos 'numeros' (que tiene 9 elementos)
+                    for (let k = 0; k < numeros.length; k++) { 
+                        let valor = numeros[k];
                         
-                        casilla.querySelector("p").textContent = valor;
-                        cont++;
-                    }
+                        // Si el valor es legal en ese momento
+                        if(RevisarfilaColumna(i, j, valor) && RevisarCuadro(i, j, valor)){
+                            casilla.querySelector("p").textContent = valor;
+                            valido = true;
+                            break; // Pasamos a la siguiente casilla (j)
+                        }
+                    } 
                     
                 }
             }
-
-            
-            if(cont === 81){
-                terminado = true;
-            }
-        }
+        } 
     }
     function RevisarfilaColumna(f,c,valor){
         let filas = [];
@@ -89,28 +82,16 @@
         
     }
     function RevisarCuadro(f,c,valor){
-        let cuadro = [];
-        let lim1 = 1;
-        let lim2 = 0;
-        if(f > 3 && f < 7){
-            lim1 = 4;
-            lim2 = 7;
-        }else if(f > 6){
-            lim1 = 7;
-            lim2 = 10;
-        }else{
-            lim1 = 1;
-            lim2 = 4;
-        }
-        for (let i = lim1; i < lim2 ; i++) {
-            for (let j = 1; j < 4; j++) {
-                let casilla = document.querySelector(`#casilla${i}${j+c}`);
-                cuadro.push(Number(casilla.querySelector("p").textContent));
+        let startFila = Math.floor((f - 1) / 3) * 3 + 1;
+        let startColumna = Math.floor((c - 1) / 3) * 3 + 1;
+        
+        for (let i = startFila; i < startFila + 3; i++) {
+            for (let j = startColumna; j < startColumna + 3; j++) {
+                let casilla = document.querySelector(`#casilla${i}${j}`);
+                if (Number(casilla.querySelector("p").textContent) === valor) {
+                    return false;
+                }
             }
-        }
-        //console.log(cuadro);
-        if(cuadro.includes(valor)){
-            return false;
         }
         return true;
     }
