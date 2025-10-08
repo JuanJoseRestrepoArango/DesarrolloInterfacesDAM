@@ -1,4 +1,5 @@
 (function(){
+    //revision diego
     let principal = document.getElementById("principal");
     let opciones = document.getElementById("opciones");
     
@@ -15,7 +16,7 @@
                 }
                 let p = document.createElement("p");
                 columna.appendChild(p);
-                fila.appendChild(columna);
+                fila.appendChild(columna);  
             }
             
             fila.className = "fila";
